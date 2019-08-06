@@ -1,7 +1,7 @@
-3d68914aec366d59ee75680726712a33 *DESCRIPTION
-4c36d35f9169057d017ce5ee89b2c019 *NAMESPACE
+ca0ddc0468ab346cce6ffc8512641315 *DESCRIPTION
+a35bf4673e590d78d74c6f429489f25e *NAMESPACE
 9642f24d3bb5453a1918cecc28052150 *R/basic.r
-7fb03fe74db693105eebbacd0c484ef7 *R/connect.r
+992bfe3fe93a7949d30ef1aef09e7cd0 *R/connect.r
 87570e1dc4e11d82ba63423abb95e1df *R/create.r
 f53ca758011c061d7f3ed3c95f6d6fd6 *R/drop.r
 6e64c0ce314c23cdb18c57253497e692 *R/file.r
@@ -11,12 +11,12 @@ f53ca758011c061d7f3ed3c95f6d6fd6 *R/drop.r
 938fdb4b7e796163e7c63cd4afd8bc5a *R/read.r
 c2818bff340ca51af606b0dac6add8aa *R/reference.r
 0df392b5386e0faffa81bf7ee23e00b0 *R/write.r
-27805efe159ffd75be7b61bab4ef3f52 *R/zzz.r
+0448dbafaaa843977f0ed6cdbd16c3ad *R/zzz.r
 efda82f372f367fac6e205d3d568d633 *build/vignette.rds
 5246d89eb56b20b9b80a06de24b38801 *inst/doc/benchmark.html
 9d14cab108227b68ec9d44b7c8e351ac *inst/doc/benchmark.rmd
-6a785780f78cb8a324c42adcf947fc5c *inst/doc/lowlevel.html
-03d547fa44661592b22bac6a414100ee *inst/doc/lowlevel.rmd
+778d1962fbb6651275cff5ab5d441a94 *inst/doc/lowlevel.html
+521fdcf37decd83d6aef1ad7148933fb *inst/doc/lowlevel.rmd
 7b6c343e41ac1965b554a8381923f4f4 *inst/doc/quickstart.html
 4456410bb162d16f6e9b89d52a980bc0 *inst/doc/quickstart.rmd
 7468ceb2bc71c9a7aea75507342252c4 *man/as_hdfql_sequence.Rd
@@ -59,7 +59,7 @@ ef95d91c5c260ae647a54cbbc8e1c210 *man/set_paths.Rd
 c1308f75e92b78ae16d733d8342d9be1 *man/stop_not_loaded.Rd
 de00deeea3bc7def772bcd5916bc1ebe *man/write.Rd
 9d14cab108227b68ec9d44b7c8e351ac *vignettes/benchmark.rmd
-03d547fa44661592b22bac6a414100ee *vignettes/lowlevel.rmd
+521fdcf37decd83d6aef1ad7148933fb *vignettes/lowlevel.rmd
 4456410bb162d16f6e9b89d52a980bc0 *vignettes/quickstart.rmd
 ccd59162ec3ba7cc5f5515a84a8cb36f *vignettes/read-benchmark-1.png
 7df4cf0cbc08431f1b92d7185728f99b *vignettes/write-benchmark-1.png

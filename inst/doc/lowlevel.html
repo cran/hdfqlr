@@ -13,7 +13,7 @@
 
 <meta name="author" content="Michael Koohafkan" />
 
-<meta name="date" content="2019-07-18" />
+<meta name="date" content="2019-08-05" />
 
 <title>Low-level API</title>
 
@@ -304,7 +304,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Low-level API</h1>
 <h4 class="author">Michael Koohafkan</h4>
-<h4 class="date">2019-07-18</h4>
+<h4 class="date">2019-08-05</h4>
 
 
 
@@ -314,36 +314,36 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>To access the low-level API, simply <code>attach</code> the <code>hql$wrapper</code> environment to your workspace.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">attach</span>(hql<span class="op">$</span>wrapper)</a></code></pre></div>
 <p>The HDFql wrapper functions can now be accessed directly. The example code from <code>hdfql-2.1.0/example/HDFqlExample.R</code> is included below:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">example.h5 =<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.h5&quot;</span>)</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">example.h5 =<span class="st"> </span><span class="kw">shQuote</span>(<span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.h5&quot;</span>))</a>
 <a class="sourceLine" id="cb3-2" title="2"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;HDFql version:&quot;</span>, HDFQL_VERSION))</a></code></pre></div>
 <pre><code>## [1] &quot;HDFql version: 2.1.0&quot;</code></pre>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># create an HDF5 file named &quot;example.h5&quot; and use (i.e. open) it</span></a>
 <a class="sourceLine" id="cb5-2" title="2"><span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;CREATE FILE&quot;</span>, example.h5))</a></code></pre></div>
-<pre><code>## [1] -1</code></pre>
+<pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;USE FILE&quot;</span>, example.h5))</a></code></pre></div>
-<pre><code>## [1] -1</code></pre>
+<pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co"># show (i.e. get) HDF5 file currently in use and populate HDFql default cursor with it</span></a>
 <a class="sourceLine" id="cb9-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;SHOW USE FILE&quot;</span>)</a></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># display HDF5 file currently in use</span></a>
 <a class="sourceLine" id="cb11-2" title="2"><span class="kw">hdfql_cursor_first</span>()</a></code></pre></div>
-<pre><code>## [1] -10</code></pre>
+<pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;File in use:&quot;</span>, <span class="kw">hdfql_cursor_get_char</span>()))</a></code></pre></div>
-<pre><code>## [1] &quot;File in use: &quot;</code></pre>
+<pre><code>## [1] &quot;File in use: C:\\Users\\mkoohafk\\AppData\\Local\\Temp\\RtmpwbdzZ8\\file450858325d1.h5&quot;</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co"># create an attribute named &quot;example_attribute&quot; of data type float with an initial value of 12.4</span></a>
 <a class="sourceLine" id="cb15-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;CREATE ATTRIBUTE example_attribute AS FLOAT VALUES(12.4)&quot;</span>)</a></code></pre></div>
-<pre><code>## [1] -4</code></pre>
+<pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># select (i.e. read) data from attribute &quot;example_attribute&quot; and populate HDFql default cursor with it</span></a>
 <a class="sourceLine" id="cb17-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;SELECT FROM example_attribute&quot;</span>)</a></code></pre></div>
-<pre><code>## [1] -4</code></pre>
+<pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co"># display value of attribute &quot;example_attribute&quot;</span></a>
 <a class="sourceLine" id="cb19-2" title="2"><span class="kw">hdfql_cursor_first</span>()</a></code></pre></div>
-<pre><code>## [1] -10</code></pre>
+<pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Attribute value:&quot;</span>, <span class="kw">hdfql_cursor_get_float</span>()))</a></code></pre></div>
-<pre><code>## [1] &quot;Attribute value: &quot;</code></pre>
+<pre><code>## [1] &quot;Attribute value: 12.3999996185303&quot;</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co"># create a dataset named &quot;example_dataset&quot; of data type int of two dimensions (size 3x2)</span></a>
 <a class="sourceLine" id="cb23-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;CREATE DATASET example_dataset AS INT(3, 2)&quot;</span>)</a></code></pre></div>
-<pre><code>## [1] -4</code></pre>
+<pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="co"># create variable &quot;values&quot; and populate it with certain values</span></a>
 <a class="sourceLine" id="cb25-2" title="2">values &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>))</a>
 <a class="sourceLine" id="cb25-3" title="3"><span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>) {</a>
@@ -357,7 +357,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="co"># insert (i.e. write) values from variable &quot;values&quot; into dataset &quot;example_dataset&quot;</span></a>
 <a class="sourceLine" id="cb27-2" title="2"><span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;INSERT INTO example_dataset VALUES FROM MEMORY&quot;</span>, <span class="kw">hdfql_variable_get_number</span>(values)))</a></code></pre></div>
-<pre><code>## [1] -4</code></pre>
+<pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="co"># unregister variable &quot;values&quot; as it is no longer used/needed (by HDFql)</span></a>
 <a class="sourceLine" id="cb29-2" title="2"><span class="kw">hdfql_variable_unregister</span>(values)</a></code></pre></div>
 <pre><code>## [1] 0</code></pre>
@@ -373,7 +373,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="co"># select (i.e. read) data from dataset &quot;example_dataset&quot; and populate variable &quot;values&quot; with it</span></a>
 <a class="sourceLine" id="cb33-2" title="2"><span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;SELECT FROM example_dataset INTO MEMORY&quot;</span>, <span class="kw">hdfql_variable_get_number</span>(values)))</a></code></pre></div>
-<pre><code>## [1] -4</code></pre>
+<pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1"><span class="co"># unregister variable &quot;values&quot; as it is no longer used/needed (by HDFql)</span></a>
 <a class="sourceLine" id="cb35-2" title="2"><span class="kw">hdfql_variable_unregister</span>(values)</a></code></pre></div>
 <pre><code>## [1] 0</code></pre>
@@ -385,37 +385,42 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb39-3" title="3">    <span class="kw">print</span>(values[y, x])</a>
 <a class="sourceLine" id="cb39-4" title="4">  }</a>
 <a class="sourceLine" id="cb39-5" title="5">}</a></code></pre></div>
-<pre><code>## [1] 0
-## [1] 0
-## [1] 0
-## [1] 0
-## [1] 0
-## [1] 0</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6</code></pre>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1"><span class="co"># another way to select (i.e. read) data from dataset &quot;example_dataset&quot; using HDFql default cursor</span></a>
 <a class="sourceLine" id="cb41-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;SELECT FROM example_dataset&quot;</span>)</a></code></pre></div>
-<pre><code>## [1] -4</code></pre>
+<pre><code>## [1] 0</code></pre>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1"><span class="co"># display content of HDFql default cursor</span></a>
 <a class="sourceLine" id="cb43-2" title="2"><span class="kw">print</span>(<span class="st">&quot;Dataset value (through cursor):&quot;</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;Dataset value (through cursor):&quot;</code></pre>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1"><span class="cf">while</span> (<span class="kw">hdfql_cursor_next</span>() <span class="op">==</span><span class="st"> </span>HDFQL_SUCCESS) {</a>
 <a class="sourceLine" id="cb45-2" title="2">  <span class="kw">print</span>(<span class="kw">hdfql_cursor_get_int</span>())</a>
-<a class="sourceLine" id="cb45-3" title="3">}</a>
-<a class="sourceLine" id="cb45-4" title="4"></a>
-<a class="sourceLine" id="cb45-5" title="5"><span class="co"># create cursor &quot;my_cursor&quot; and use it</span></a>
-<a class="sourceLine" id="cb45-6" title="6">my_cursor &lt;-<span class="st"> </span><span class="kw">hdfql_cursor</span>()</a>
-<a class="sourceLine" id="cb45-7" title="7"><span class="kw">hdfql_cursor_use</span>(my_cursor)</a></code></pre></div>
+<a class="sourceLine" id="cb45-3" title="3">}</a></code></pre></div>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="co"># create cursor &quot;my_cursor&quot; and use it</span></a>
+<a class="sourceLine" id="cb47-2" title="2">my_cursor &lt;-<span class="st"> </span><span class="kw">hdfql_cursor</span>()</a>
+<a class="sourceLine" id="cb47-3" title="3"><span class="kw">hdfql_cursor_use</span>(my_cursor)</a></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="co"># show (i.e. get) size (in bytes) of dataset &quot;example_dataset&quot; and populate cursor &quot;my_cursor&quot; with it</span></a>
-<a class="sourceLine" id="cb47-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;SHOW SIZE example_dataset&quot;</span>)</a></code></pre></div>
-<pre><code>## [1] -4</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1"><span class="co"># display content of cursor &quot;my_cursor&quot;</span></a>
-<a class="sourceLine" id="cb49-2" title="2"><span class="kw">hdfql_cursor_first</span>()</a></code></pre></div>
-<pre><code>## [1] -10</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Dataset size (in bytes):&quot;</span>, <span class="kw">hdfql_cursor_get_bigint</span>()))</a></code></pre></div>
-<pre><code>## [1] &quot;Dataset size (in bytes): &quot;</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1"><span class="co"># close the file</span></a>
-<a class="sourceLine" id="cb53-2" title="2"><span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;CLOSE FILE&quot;</span>, example.h5))</a></code></pre></div>
-<pre><code>## [1] -1</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1"><span class="co"># show (i.e. get) size (in bytes) of dataset &quot;example_dataset&quot; and populate cursor &quot;my_cursor&quot; with it</span></a>
+<a class="sourceLine" id="cb49-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;SHOW SIZE example_dataset&quot;</span>)</a></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1"><span class="co"># display content of cursor &quot;my_cursor&quot;</span></a>
+<a class="sourceLine" id="cb51-2" title="2"><span class="kw">hdfql_cursor_first</span>()</a></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Dataset size (in bytes):&quot;</span>, <span class="kw">hdfql_cursor_get_bigint</span>()))</a></code></pre></div>
+<pre><code>## [1] &quot;Dataset size (in bytes): 24&quot;</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1"><span class="co"># close the file</span></a>
+<a class="sourceLine" id="cb55-2" title="2"><span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;CLOSE FILE&quot;</span>, example.h5))</a></code></pre></div>
+<pre><code>## [1] 0</code></pre>
 
 
 

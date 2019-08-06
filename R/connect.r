@@ -132,7 +132,7 @@ stop_not_loaded = function() {
 #' @param path The path to the HDFql installation. 
 #' 
 #' @importFrom utils packageName tail
-#' @importFrom methods setRefClass cacheMetaData
+#' @importFrom methods setRefClass cacheMetaData new
 #' @export
 hql_load = function(path) {
   if (hql_is_loaded()) {
@@ -170,7 +170,7 @@ hql_load = function(path) {
     } 
   }
   # load wrapper
-  wrapper = new.env(parent = baseenv())
+  wrapper = new.env(parent = globalenv())
 #  assign("hdfql_shared_library", hql.paths$sharedlib, envir = wrapper)
   tryCatch(
     sys.source(wrapper.file, envir = wrapper, toplevel.env = packageName()),
@@ -192,10 +192,12 @@ hql_unload = function() {
 	if (hql_is_loaded()) {
 		dllpath = normalizePath(file.path(hql.paths$install,
 			hql.paths$dll), mustWork = TRUE)
-		lapply(dllpath, dyn.unload)
-		if (hql_is_loaded()) {
-			stop("HDFql DLLs could not be unloaded.")
-		}
+    for (dll in dllpath) {
+      dyn.unload(dll)
+      if (dll %in% sapply(getLoadedDLLs(), function(x) normalizePath(x[["path"]], mustWork = FALSE))) {
+        stop("Error unloading HDFql shared library object ", dll)
+      }
+    }
 		rm(list = "wrapper", envir = hql)
 	}
   invisible(NULL)
