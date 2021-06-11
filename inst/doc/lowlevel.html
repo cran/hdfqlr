@@ -1,87 +1,76 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Michael Koohafkan" />
 
-<meta name="date" content="2019-08-05" />
+<meta name="date" content="2021-06-09" />
 
 <title>Low-level API</title>
 
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
+
+<style type="text/css">
+  code {
+    white-space: pre;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 
 </style>
 <script>
@@ -108,189 +97,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
-}
-#header {
-text-align: center;
-}
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
-}
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
-}
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
-}
-#TOC ul ul {
-margin-left: -2em;
-}
-#TOC li {
-line-height: 16px;
-}
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
-}
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
-}
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
-}
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
-}
-pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
-}
-pre:not([class]) {
-background-color: #f7f7f7;
-}
-code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
-}
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
 
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
-</style>
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
 
 
 
@@ -304,122 +112,186 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Low-level API</h1>
 <h4 class="author">Michael Koohafkan</h4>
-<h4 class="date">2019-08-05</h4>
+<h4 class="date">2021-06-09</h4>
 
 
 
 <p>The <code>hdfqlr</code> package provides a high-level API for reading and writing HDF files. However, the package also provides access to the lower-level API provided by the HDFql R wrapper.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(hdfqlr)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">hql_load</span>(<span class="st">&#39;path/to/hdfql-x.x.x&#39;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hdfqlr)
+<span class="kw">hql_load</span>(<span class="st">'path/to/hdfql-x.x.x'</span>)</code></pre></div>
 <p>To access the low-level API, simply <code>attach</code> the <code>hql$wrapper</code> environment to your workspace.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">attach</span>(hql<span class="op">$</span>wrapper)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attach</span>(hql<span class="op">$</span>wrapper)</code></pre></div>
+<pre><code>## The following objects are masked from hql$wrapper (pos = 4):
+## 
+##     HDFQL_ARRAY, HDFQL_ASCII, HDFQL_ATTRIBUTE, HDFQL_BIG_ENDIAN,
+##     HDFQL_BIGINT, HDFQL_BITFIELD, HDFQL_CHAR, HDFQL_CHUNKED,
+##     HDFQL_COMPACT, HDFQL_COMPOUND, HDFQL_CONTIGUOUS, hdfql_cursor,
+##     hdfql_cursor_, hdfql_cursor_absolute, hdfql_cursor_clear,
+##     hdfql_cursor_clone, hdfql_cursor_first, hdfql_cursor_get_bigint,
+##     hdfql_cursor_get_char, hdfql_cursor_get_count,
+##     hdfql_cursor_get_data_type, hdfql_cursor_get_double,
+##     hdfql_cursor_get_float, hdfql_cursor_get_int,
+##     hdfql_cursor_get_position, hdfql_cursor_get_size,
+##     hdfql_cursor_get_smallint, hdfql_cursor_get_tinyint,
+##     hdfql_cursor_get_unsigned_bigint, hdfql_cursor_get_unsigned_int,
+##     hdfql_cursor_get_unsigned_smallint,
+##     hdfql_cursor_get_unsigned_tinyint, hdfql_cursor_initialize,
+##     hdfql_cursor_last, hdfql_cursor_next, hdfql_cursor_previous,
+##     hdfql_cursor_relative, hdfql_cursor_use, hdfql_cursor_use_default,
+##     HDFQL_DATASET, HDFQL_DIRECTORY, HDFQL_DISABLED, HDFQL_DOUBLE,
+##     HDFQL_EARLIEST, HDFQL_EARLY, HDFQL_ENABLED, HDFQL_ENUMERATION,
+##     HDFQL_ERROR_AFTER_LAST, HDFQL_ERROR_ALREADY_EXISTS,
+##     HDFQL_ERROR_BEFORE_FIRST, HDFQL_ERROR_DANGLING_LINK,
+##     HDFQL_ERROR_EMPTY, HDFQL_ERROR_FULL, hdfql_error_get_line,
+##     hdfql_error_get_message, hdfql_error_get_position,
+##     HDFQL_ERROR_INVALID_FILE, HDFQL_ERROR_INVALID_REGULAR_EXPRESSION,
+##     HDFQL_ERROR_NO_ACCESS, HDFQL_ERROR_NO_ADDRESS,
+##     HDFQL_ERROR_NOT_ENOUGH_MEMORY, HDFQL_ERROR_NOT_ENOUGH_SPACE,
+##     HDFQL_ERROR_NOT_FOUND, HDFQL_ERROR_NOT_OPEN,
+##     HDFQL_ERROR_NOT_REGISTERED, HDFQL_ERROR_NOT_SUPPORTED,
+##     HDFQL_ERROR_OUTSIDE_LIMIT, HDFQL_ERROR_PARSE,
+##     HDFQL_ERROR_UNEXPECTED_DATA_TYPE,
+##     HDFQL_ERROR_UNEXPECTED_STORAGE_TYPE, HDFQL_ERROR_UNEXPECTED_TYPE,
+##     HDFQL_ERROR_UNKNOWN, hdfql_execute, hdfql_execute_get_status,
+##     HDFQL_EXTERNAL_LINK, HDFQL_FILE, HDFQL_FILL_DEFAULT,
+##     HDFQL_FILL_UNDEFINED, HDFQL_FILL_USER_DEFINED, HDFQL_FLOAT,
+##     hdfql_get_canonical_path, HDFQL_GLOBAL, HDFQL_GROUP,
+##     HDFQL_INCREMENTAL, HDFQL_INDEXED, HDFQL_INT, HDFQL_LATE,
+##     HDFQL_LATEST, HDFQL_LITTLE_ENDIAN, HDFQL_LOCAL, hdfql_mpi_get_rank,
+##     hdfql_mpi_get_size, HDFQL_NO, HDFQL_OPAQUE, HDFQL_REFERENCE,
+##     hdfql_shared_library, HDFQL_SMALLINT, HDFQL_SOFT_LINK,
+##     hdfql_subcursor_absolute, hdfql_subcursor_first,
+##     hdfql_subcursor_get_bigint, hdfql_subcursor_get_char,
+##     hdfql_subcursor_get_count, hdfql_subcursor_get_double,
+##     hdfql_subcursor_get_float, hdfql_subcursor_get_int,
+##     hdfql_subcursor_get_position, hdfql_subcursor_get_size,
+##     hdfql_subcursor_get_smallint, hdfql_subcursor_get_tinyint,
+##     hdfql_subcursor_get_unsigned_bigint,
+##     hdfql_subcursor_get_unsigned_int,
+##     hdfql_subcursor_get_unsigned_smallint,
+##     hdfql_subcursor_get_unsigned_tinyint, hdfql_subcursor_last,
+##     hdfql_subcursor_next, hdfql_subcursor_previous,
+##     hdfql_subcursor_relative, HDFQL_SUCCESS, HDFQL_TINYINT,
+##     HDFQL_TRACKED, HDFQL_UNDEFINED, HDFQL_UNLIMITED,
+##     HDFQL_UNSIGNED_BIGINT, HDFQL_UNSIGNED_INT, HDFQL_UNSIGNED_SMALLINT,
+##     HDFQL_UNSIGNED_TINYINT, HDFQL_UNSIGNED_VARBIGINT,
+##     HDFQL_UNSIGNED_VARINT, HDFQL_UNSIGNED_VARSMALLINT,
+##     HDFQL_UNSIGNED_VARTINYINT, HDFQL_UTF8, HDFQL_VARBIGINT,
+##     HDFQL_VARCHAR, HDFQL_VARDOUBLE, HDFQL_VARFLOAT,
+##     hdfql_variable_get_count, hdfql_variable_get_data_type,
+##     hdfql_variable_get_dimension, hdfql_variable_get_dimension_count,
+##     hdfql_variable_get_number, hdfql_variable_get_size,
+##     hdfql_variable_register, hdfql_variable_transient_register,
+##     hdfql_variable_unregister, hdfql_variable_unregister_all,
+##     HDFQL_VARINT, HDFQL_VARSMALLINT, HDFQL_VARTINYINT, HDFQL_VERSION,
+##     HDFQL_VERSION_18, HDFQL_YES</code></pre>
 <p>The HDFql wrapper functions can now be accessed directly. The example code from <code>hdfql-2.1.0/example/HDFqlExample.R</code> is included below:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">example.h5 =<span class="st"> </span><span class="kw">shQuote</span>(<span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.h5&quot;</span>))</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;HDFql version:&quot;</span>, HDFQL_VERSION))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">example.h5 =<span class="st"> </span><span class="kw">shQuote</span>(<span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.h5&quot;</span>))
+<span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;HDFql version:&quot;</span>, HDFQL_VERSION))</code></pre></div>
 <pre><code>## [1] &quot;HDFql version: 2.1.0&quot;</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># create an HDF5 file named &quot;example.h5&quot; and use (i.e. open) it</span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;CREATE FILE&quot;</span>, example.h5))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create an HDF5 file named &quot;example.h5&quot; and use (i.e. open) it</span>
+<span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;CREATE FILE&quot;</span>, example.h5))</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;USE FILE&quot;</span>, example.h5))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;USE FILE&quot;</span>, example.h5))</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co"># show (i.e. get) HDF5 file currently in use and populate HDFql default cursor with it</span></a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;SHOW USE FILE&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># show (i.e. get) HDF5 file currently in use and populate HDFql default cursor with it</span>
+<span class="kw">hdfql_execute</span>(<span class="st">&quot;SHOW USE FILE&quot;</span>)</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># display HDF5 file currently in use</span></a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="kw">hdfql_cursor_first</span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># display HDF5 file currently in use</span>
+<span class="kw">hdfql_cursor_first</span>()</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;File in use:&quot;</span>, <span class="kw">hdfql_cursor_get_char</span>()))</a></code></pre></div>
-<pre><code>## [1] &quot;File in use: C:\\Users\\mkoohafk\\AppData\\Local\\Temp\\RtmpwbdzZ8\\file450858325d1.h5&quot;</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co"># create an attribute named &quot;example_attribute&quot; of data type float with an initial value of 12.4</span></a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;CREATE ATTRIBUTE example_attribute AS FLOAT VALUES(12.4)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;File in use:&quot;</span>, <span class="kw">hdfql_cursor_get_char</span>()))</code></pre></div>
+<pre><code>## [1] &quot;File in use: C:\\Users\\michael\\AppData\\Local\\Temp\\Rtmpyos7yO\\file2d6c30ba408e.h5&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create an attribute named &quot;example_attribute&quot; of data type float with an initial value of 12.4</span>
+<span class="kw">hdfql_execute</span>(<span class="st">&quot;CREATE ATTRIBUTE example_attribute AS FLOAT VALUES(12.4)&quot;</span>)</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># select (i.e. read) data from attribute &quot;example_attribute&quot; and populate HDFql default cursor with it</span></a>
-<a class="sourceLine" id="cb17-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;SELECT FROM example_attribute&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># select (i.e. read) data from attribute &quot;example_attribute&quot; and populate HDFql default cursor with it</span>
+<span class="kw">hdfql_execute</span>(<span class="st">&quot;SELECT FROM example_attribute&quot;</span>)</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co"># display value of attribute &quot;example_attribute&quot;</span></a>
-<a class="sourceLine" id="cb19-2" title="2"><span class="kw">hdfql_cursor_first</span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># display value of attribute &quot;example_attribute&quot;</span>
+<span class="kw">hdfql_cursor_first</span>()</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Attribute value:&quot;</span>, <span class="kw">hdfql_cursor_get_float</span>()))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Attribute value:&quot;</span>, <span class="kw">hdfql_cursor_get_float</span>()))</code></pre></div>
 <pre><code>## [1] &quot;Attribute value: 12.3999996185303&quot;</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co"># create a dataset named &quot;example_dataset&quot; of data type int of two dimensions (size 3x2)</span></a>
-<a class="sourceLine" id="cb23-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;CREATE DATASET example_dataset AS INT(3, 2)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create a dataset named &quot;example_dataset&quot; of data type int of two dimensions (size 3x2)</span>
+<span class="kw">hdfql_execute</span>(<span class="st">&quot;CREATE DATASET example_dataset AS INT(3, 2)&quot;</span>)</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="co"># create variable &quot;values&quot; and populate it with certain values</span></a>
-<a class="sourceLine" id="cb25-2" title="2">values &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb25-3" title="3"><span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>) {</a>
-<a class="sourceLine" id="cb25-4" title="4">  <span class="cf">for</span> (y <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) {</a>
-<a class="sourceLine" id="cb25-5" title="5">    values[y, x] &lt;-<span class="st"> </span><span class="kw">as.integer</span>(x <span class="op">*</span><span class="st"> </span><span class="dv">3</span> <span class="op">+</span><span class="st"> </span>y <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb25-6" title="6">  }</a>
-<a class="sourceLine" id="cb25-7" title="7">}</a>
-<a class="sourceLine" id="cb25-8" title="8"></a>
-<a class="sourceLine" id="cb25-9" title="9"><span class="co"># register variable &quot;values&quot; for subsequent use (by HDFql)</span></a>
-<a class="sourceLine" id="cb25-10" title="10"><span class="kw">hdfql_variable_register</span>(values)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create variable &quot;values&quot; and populate it with certain values</span>
+values &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>))
+<span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>) {
+  <span class="cf">for</span> (y <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) {
+    values[y, x] &lt;-<span class="st"> </span><span class="kw">as.integer</span>(x <span class="op">*</span><span class="st"> </span><span class="dv">3</span> <span class="op">+</span><span class="st"> </span>y <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)
+  }
+}
+
+<span class="co"># register variable &quot;values&quot; for subsequent use (by HDFql)</span>
+<span class="kw">hdfql_variable_register</span>(values)</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="co"># insert (i.e. write) values from variable &quot;values&quot; into dataset &quot;example_dataset&quot;</span></a>
-<a class="sourceLine" id="cb27-2" title="2"><span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;INSERT INTO example_dataset VALUES FROM MEMORY&quot;</span>, <span class="kw">hdfql_variable_get_number</span>(values)))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># insert (i.e. write) values from variable &quot;values&quot; into dataset &quot;example_dataset&quot;</span>
+<span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;INSERT INTO example_dataset VALUES FROM MEMORY&quot;</span>, <span class="kw">hdfql_variable_get_number</span>(values)))</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="co"># unregister variable &quot;values&quot; as it is no longer used/needed (by HDFql)</span></a>
-<a class="sourceLine" id="cb29-2" title="2"><span class="kw">hdfql_variable_unregister</span>(values)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># unregister variable &quot;values&quot; as it is no longer used/needed (by HDFql)</span>
+<span class="kw">hdfql_variable_unregister</span>(values)</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="co"># populate variable &quot;values&quot; with zeros (i.e. reset variable)</span></a>
-<a class="sourceLine" id="cb31-2" title="2"><span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>) {</a>
-<a class="sourceLine" id="cb31-3" title="3">  <span class="cf">for</span> (y <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) {</a>
-<a class="sourceLine" id="cb31-4" title="4">    values[y, x] &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb31-5" title="5">  }</a>
-<a class="sourceLine" id="cb31-6" title="6">}</a>
-<a class="sourceLine" id="cb31-7" title="7"></a>
-<a class="sourceLine" id="cb31-8" title="8"><span class="co"># register variable &quot;values&quot; for subsequent use (by HDFql)</span></a>
-<a class="sourceLine" id="cb31-9" title="9"><span class="kw">hdfql_variable_register</span>(values)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># populate variable &quot;values&quot; with zeros (i.e. reset variable)</span>
+<span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>) {
+  <span class="cf">for</span> (y <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) {
+    values[y, x] &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="dv">0</span>)
+  }
+}
+
+<span class="co"># register variable &quot;values&quot; for subsequent use (by HDFql)</span>
+<span class="kw">hdfql_variable_register</span>(values)</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="co"># select (i.e. read) data from dataset &quot;example_dataset&quot; and populate variable &quot;values&quot; with it</span></a>
-<a class="sourceLine" id="cb33-2" title="2"><span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;SELECT FROM example_dataset INTO MEMORY&quot;</span>, <span class="kw">hdfql_variable_get_number</span>(values)))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># select (i.e. read) data from dataset &quot;example_dataset&quot; and populate variable &quot;values&quot; with it</span>
+<span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;SELECT FROM example_dataset INTO MEMORY&quot;</span>, <span class="kw">hdfql_variable_get_number</span>(values)))</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1"><span class="co"># unregister variable &quot;values&quot; as it is no longer used/needed (by HDFql)</span></a>
-<a class="sourceLine" id="cb35-2" title="2"><span class="kw">hdfql_variable_unregister</span>(values)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># unregister variable &quot;values&quot; as it is no longer used/needed (by HDFql)</span>
+<span class="kw">hdfql_variable_unregister</span>(values)</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1"><span class="co"># display content of variable &quot;values&quot;</span></a>
-<a class="sourceLine" id="cb37-2" title="2"><span class="kw">print</span>(<span class="st">&quot;Dataset value (through variable):&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># display content of variable &quot;values&quot;</span>
+<span class="kw">print</span>(<span class="st">&quot;Dataset value (through variable):&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;Dataset value (through variable):&quot;</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1"><span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>) {</a>
-<a class="sourceLine" id="cb39-2" title="2">  <span class="cf">for</span> (y <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) {</a>
-<a class="sourceLine" id="cb39-3" title="3">    <span class="kw">print</span>(values[y, x])</a>
-<a class="sourceLine" id="cb39-4" title="4">  }</a>
-<a class="sourceLine" id="cb39-5" title="5">}</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>) {
+  <span class="cf">for</span> (y <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) {
+    <span class="kw">print</span>(values[y, x])
+  }
+}</code></pre></div>
 <pre><code>## [1] 1
 ## [1] 2
 ## [1] 3
 ## [1] 4
 ## [1] 5
 ## [1] 6</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1"><span class="co"># another way to select (i.e. read) data from dataset &quot;example_dataset&quot; using HDFql default cursor</span></a>
-<a class="sourceLine" id="cb41-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;SELECT FROM example_dataset&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># another way to select (i.e. read) data from dataset &quot;example_dataset&quot; using HDFql default cursor</span>
+<span class="kw">hdfql_execute</span>(<span class="st">&quot;SELECT FROM example_dataset&quot;</span>)</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1"><span class="co"># display content of HDFql default cursor</span></a>
-<a class="sourceLine" id="cb43-2" title="2"><span class="kw">print</span>(<span class="st">&quot;Dataset value (through cursor):&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># display content of HDFql default cursor</span>
+<span class="kw">print</span>(<span class="st">&quot;Dataset value (through cursor):&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;Dataset value (through cursor):&quot;</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1"><span class="cf">while</span> (<span class="kw">hdfql_cursor_next</span>() <span class="op">==</span><span class="st"> </span>HDFQL_SUCCESS) {</a>
-<a class="sourceLine" id="cb45-2" title="2">  <span class="kw">print</span>(<span class="kw">hdfql_cursor_get_int</span>())</a>
-<a class="sourceLine" id="cb45-3" title="3">}</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">while</span> (<span class="kw">hdfql_cursor_next</span>() <span class="op">==</span><span class="st"> </span>HDFQL_SUCCESS) {
+  <span class="kw">print</span>(<span class="kw">hdfql_cursor_get_int</span>())
+}</code></pre></div>
 <pre><code>## [1] 1
 ## [1] 2
 ## [1] 3
 ## [1] 4
 ## [1] 5
 ## [1] 6</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="co"># create cursor &quot;my_cursor&quot; and use it</span></a>
-<a class="sourceLine" id="cb47-2" title="2">my_cursor &lt;-<span class="st"> </span><span class="kw">hdfql_cursor</span>()</a>
-<a class="sourceLine" id="cb47-3" title="3"><span class="kw">hdfql_cursor_use</span>(my_cursor)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create cursor &quot;my_cursor&quot; and use it</span>
+my_cursor &lt;-<span class="st"> </span><span class="kw">hdfql_cursor</span>()
+<span class="kw">hdfql_cursor_use</span>(my_cursor)</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1"><span class="co"># show (i.e. get) size (in bytes) of dataset &quot;example_dataset&quot; and populate cursor &quot;my_cursor&quot; with it</span></a>
-<a class="sourceLine" id="cb49-2" title="2"><span class="kw">hdfql_execute</span>(<span class="st">&quot;SHOW SIZE example_dataset&quot;</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># show (i.e. get) size (in bytes) of dataset &quot;example_dataset&quot; and populate cursor &quot;my_cursor&quot; with it</span>
+<span class="kw">hdfql_execute</span>(<span class="st">&quot;SHOW SIZE example_dataset&quot;</span>)</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1"><span class="co"># display content of cursor &quot;my_cursor&quot;</span></a>
-<a class="sourceLine" id="cb51-2" title="2"><span class="kw">hdfql_cursor_first</span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># display content of cursor &quot;my_cursor&quot;</span>
+<span class="kw">hdfql_cursor_first</span>()</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Dataset size (in bytes):&quot;</span>, <span class="kw">hdfql_cursor_get_bigint</span>()))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Dataset size (in bytes):&quot;</span>, <span class="kw">hdfql_cursor_get_bigint</span>()))</code></pre></div>
 <pre><code>## [1] &quot;Dataset size (in bytes): 24&quot;</code></pre>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1"><span class="co"># close the file</span></a>
-<a class="sourceLine" id="cb55-2" title="2"><span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;CLOSE FILE&quot;</span>, example.h5))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># close the file</span>
+<span class="kw">hdfql_execute</span>(<span class="kw">paste</span>(<span class="st">&quot;CLOSE FILE&quot;</span>, example.h5))</code></pre></div>
 <pre><code>## [1] 0</code></pre>
 
 

@@ -1,87 +1,76 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Michael Koohafkan" />
 
-<meta name="date" content="2019-07-11" />
+<meta name="date" content="2021-06-09" />
 
 <title>Benchmarking hdfqlr</title>
 
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
+
+<style type="text/css">
+  code {
+    white-space: pre;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 
 </style>
 <script>
@@ -108,189 +97,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
-}
-#header {
-text-align: center;
-}
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
-}
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
-}
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
-}
-#TOC ul ul {
-margin-left: -2em;
-}
-#TOC li {
-line-height: 16px;
-}
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
-}
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
-}
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
-}
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
-}
-pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
-}
-pre:not([class]) {
-background-color: #f7f7f7;
-}
-code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
-}
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
 
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
-</style>
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
 
 
 
@@ -304,53 +112,42 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Benchmarking hdfqlr</h1>
 <h4 class="author">Michael Koohafkan</h4>
-<h4 class="date">2019-07-11</h4>
+<h4 class="date">2021-06-09</h4>
 
 
 
-<p>This document provides some benchmarks for comparing the performance of hdfqlr to two other HDF file APIs available in R: The <a href="https://cran.r-project.org/package=hdf5r"><code>hdf5r</code></a> package and the now-deprecated <a href="https://cran.r-project.org/package=h5"><code>h5</code></a> package. Other packages that provide read (but not write) support for HDF files were not tested.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(hdfqlr)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(hdf5r)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(h5)</a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(microbenchmark)</a></code></pre></div>
+<p>This document provides some benchmarks for comparing the performance of hdfqlr to the <a href="https://cran.r-project.org/package=hdf5r"><code>hdf5r</code></a> package. This vignette previously included comparisons to the now-deprecated <a href="https://cran.r-project.org/package=h5"><code>h5</code></a> package. Other packages that provide read (but not write) support for HDF files were not tested.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hdfqlr)
+<span class="kw">library</span>(hdf5r)
+<span class="kw">library</span>(microbenchmark)</code></pre></div>
 <div id="writing-hdf-datasets" class="section level2">
 <h2>Writing HDF datasets</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">write_hdfqlr =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb2-2" title="2">    test.file =<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.h5&quot;</span>)</a>
-<a class="sourceLine" id="cb2-3" title="3">    <span class="kw">hql_create_file</span>(test.file)</a>
-<a class="sourceLine" id="cb2-4" title="4">    <span class="kw">hql_use_file</span>(test.file)</a>
-<a class="sourceLine" id="cb2-5" title="5">    <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">paste0</span>(<span class="st">&quot;vector&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>)) {</a>
-<a class="sourceLine" id="cb2-6" title="6">        <span class="kw">write</span>(<span class="st">&quot;DATASET&quot;</span>, <span class="kw">runif</span>(<span class="dv">10000</span>), i)</a>
-<a class="sourceLine" id="cb2-7" title="7">    }</a>
-<a class="sourceLine" id="cb2-8" title="8">    <span class="kw">hql_close_file</span>(test.file)</a>
-<a class="sourceLine" id="cb2-9" title="9">}</a>
-<a class="sourceLine" id="cb2-10" title="10"></a>
-<a class="sourceLine" id="cb2-11" title="11">write_hdf5r =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb2-12" title="12">    test.file =<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.h5&quot;</span>)</a>
-<a class="sourceLine" id="cb2-13" title="13">    <span class="co"># create hdf5 file (6 vectors with 10k random numbers each)</span></a>
-<a class="sourceLine" id="cb2-14" title="14">    h5file =<span class="st"> </span>hdf5r<span class="op">::</span>H5File<span class="op">$</span><span class="kw">new</span>(test.file, <span class="st">&quot;w&quot;</span>)</a>
-<a class="sourceLine" id="cb2-15" title="15">    <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">paste0</span>(<span class="st">&quot;vector&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>)) {</a>
-<a class="sourceLine" id="cb2-16" title="16">        h5file[[i]] =<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10000</span>)</a>
-<a class="sourceLine" id="cb2-17" title="17">    }</a>
-<a class="sourceLine" id="cb2-18" title="18">    h5file<span class="op">$</span><span class="kw">close_all</span>()</a>
-<a class="sourceLine" id="cb2-19" title="19">}</a>
-<a class="sourceLine" id="cb2-20" title="20"></a>
-<a class="sourceLine" id="cb2-21" title="21">write_h5 =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb2-22" title="22">    test.file =<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.h5&quot;</span>)</a>
-<a class="sourceLine" id="cb2-23" title="23">    f =<span class="st"> </span>h5<span class="op">::</span><span class="kw">h5file</span>(test.file)</a>
-<a class="sourceLine" id="cb2-24" title="24">    <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">paste0</span>(<span class="st">&quot;vector&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>)) {</a>
-<a class="sourceLine" id="cb2-25" title="25">        f[i] =<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10000</span>)</a>
-<a class="sourceLine" id="cb2-26" title="26">    }</a>
-<a class="sourceLine" id="cb2-27" title="27">    h5<span class="op">::</span><span class="kw">h5close</span>(f)</a>
-<a class="sourceLine" id="cb2-28" title="28">}</a>
-<a class="sourceLine" id="cb2-29" title="29"></a>
-<a class="sourceLine" id="cb2-30" title="30">write.benchmark =<span class="st"> </span><span class="kw">microbenchmark</span>(</a>
-<a class="sourceLine" id="cb2-31" title="31">        <span class="st">&quot;hdf5r&quot;</span> =<span class="st"> </span><span class="kw">write_hdf5r</span>(),</a>
-<a class="sourceLine" id="cb2-32" title="32">        <span class="st">&quot;h5&quot;</span> =<span class="st"> </span><span class="kw">write_h5</span>(),</a>
-<a class="sourceLine" id="cb2-33" title="33">        <span class="st">&quot;hdfqlr&quot;</span> =<span class="st"> </span><span class="kw">write_hdfqlr</span>(),</a>
-<a class="sourceLine" id="cb2-34" title="34">    <span class="dt">times =</span> 1000L,</a>
-<a class="sourceLine" id="cb2-35" title="35">    <span class="dt">unit =</span> <span class="st">&#39;ms&#39;</span></a>
-<a class="sourceLine" id="cb2-36" title="36">)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">write_hdfqlr =<span class="st"> </span><span class="cf">function</span>() {
+    test.file =<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.h5&quot;</span>)
+    <span class="kw">hql_create_file</span>(test.file)
+    <span class="kw">hql_use_file</span>(test.file)
+    <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">paste0</span>(<span class="st">&quot;vector&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>)) {
+        <span class="kw">write</span>(<span class="st">&quot;DATASET&quot;</span>, <span class="kw">runif</span>(<span class="dv">10000</span>), i)
+    }
+    <span class="kw">hql_close_file</span>(test.file)
+}
+
+write_hdf5r =<span class="st"> </span><span class="cf">function</span>() {
+    test.file =<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.h5&quot;</span>)
+    <span class="co"># create hdf5 file (6 vectors with 10k random numbers each)</span>
+    h5file =<span class="st"> </span>hdf5r<span class="op">::</span>H5File<span class="op">$</span><span class="kw">new</span>(test.file, <span class="st">&quot;w&quot;</span>)
+    <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">paste0</span>(<span class="st">&quot;vector&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>)) {
+        h5file[[i]] =<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10000</span>)
+    }
+    h5file<span class="op">$</span><span class="kw">close_all</span>()
+}
+
+write.benchmark =<span class="st"> </span><span class="kw">microbenchmark</span>(
+        <span class="st">&quot;hdf5r&quot;</span> =<span class="st"> </span><span class="kw">write_hdf5r</span>(),
+        <span class="st">&quot;hdfqlr&quot;</span> =<span class="st"> </span><span class="kw">write_hdfqlr</span>(),
+    <span class="dt">times =</span> 1000L,
+    <span class="dt">unit =</span> <span class="st">'ms'</span>
+)</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -367,80 +164,62 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <tbody>
 <tr class="odd">
 <td align="left">hdf5r</td>
-<td align="right">137.01529</td>
-<td align="right">142.83631</td>
-<td align="right">149.75298</td>
-<td align="right">146.79678</td>
-<td align="right">151.55699</td>
-<td align="right">460.1412</td>
+<td align="right">150.1851</td>
+<td align="right">185.27945</td>
+<td align="right">199.61208</td>
+<td align="right">198.1042</td>
+<td align="right">211.18990</td>
+<td align="right">399.0265</td>
 <td align="right">1000</td>
 </tr>
 <tr class="even">
-<td align="left">h5</td>
-<td align="right">27.72461</td>
-<td align="right">29.08571</td>
-<td align="right">30.89929</td>
-<td align="right">29.85698</td>
-<td align="right">31.29489</td>
-<td align="right">156.5213</td>
-<td align="right">1000</td>
-</tr>
-<tr class="odd">
 <td align="left">hdfqlr</td>
-<td align="right">26.27676</td>
-<td align="right">27.78007</td>
-<td align="right">29.81201</td>
-<td align="right">28.59322</td>
-<td align="right">30.40774</td>
-<td align="right">139.9679</td>
+<td align="right">23.8104</td>
+<td align="right">29.05005</td>
+<td align="right">36.77295</td>
+<td align="right">37.1426</td>
+<td align="right">41.68425</td>
+<td align="right">88.0541</td>
 <td align="right">1000</td>
 </tr>
 </tbody>
 </table>
 <div class="figure">
-<img src="data:image/png;base64,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" alt="plot of chunk write-benchmark" />
+<img src="data:image/png;base64,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" alt="plot of chunk write-benchmark" />
 <p class="caption">plot of chunk write-benchmark</p>
 </div>
 </div>
 <div id="reading-hdf-datasets" class="section level2">
 <h2>Reading HDF datasets</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">tf =<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.h5&quot;</span>)</a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="kw">hql_create_file</span>(tf)</a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="kw">hql_use_file</span>(tf)</a>
-<a class="sourceLine" id="cb3-4" title="4">sets =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;vector&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="cf">for</span> (i <span class="cf">in</span> sets) {</a>
-<a class="sourceLine" id="cb3-6" title="6">    <span class="kw">hql_write_dataset</span>(<span class="kw">runif</span>(<span class="dv">10000</span>), i)</a>
-<a class="sourceLine" id="cb3-7" title="7">}</a>
-<a class="sourceLine" id="cb3-8" title="8"><span class="kw">hql_close_file</span>(tf)</a>
-<a class="sourceLine" id="cb3-9" title="9"></a>
-<a class="sourceLine" id="cb3-10" title="10">read_hdfqlr =<span class="st"> </span><span class="cf">function</span>(file, sets) {</a>
-<a class="sourceLine" id="cb3-11" title="11">    <span class="kw">hql_use_file</span>(file)</a>
-<a class="sourceLine" id="cb3-12" title="12">    result =<span class="st"> </span><span class="kw">lapply</span>(sets, hql_read_dataset)</a>
-<a class="sourceLine" id="cb3-13" title="13">    <span class="kw">hql_close_file</span>(file)</a>
-<a class="sourceLine" id="cb3-14" title="14">    result</a>
-<a class="sourceLine" id="cb3-15" title="15">}</a>
-<a class="sourceLine" id="cb3-16" title="16"></a>
-<a class="sourceLine" id="cb3-17" title="17">read_hdf5r =<span class="st"> </span><span class="cf">function</span>(file, sets) {</a>
-<a class="sourceLine" id="cb3-18" title="18">    h5file =<span class="st"> </span>hdf5r<span class="op">::</span>H5File<span class="op">$</span><span class="kw">new</span>(file, <span class="st">&quot;r&quot;</span>)</a>
-<a class="sourceLine" id="cb3-19" title="19">    result =<span class="st"> </span><span class="kw">lapply</span>(sets, <span class="cf">function</span>(i) h5file[[i]][])</a>
-<a class="sourceLine" id="cb3-20" title="20">    h5file<span class="op">$</span><span class="kw">close_all</span>()</a>
-<a class="sourceLine" id="cb3-21" title="21">    result</a>
-<a class="sourceLine" id="cb3-22" title="22">}</a>
-<a class="sourceLine" id="cb3-23" title="23"></a>
-<a class="sourceLine" id="cb3-24" title="24">read_h5 =<span class="st"> </span><span class="cf">function</span>(file, sets) {</a>
-<a class="sourceLine" id="cb3-25" title="25">    h5file =<span class="st"> </span>h5<span class="op">::</span><span class="kw">h5file</span>(file, <span class="st">&quot;r&quot;</span>)</a>
-<a class="sourceLine" id="cb3-26" title="26">    result =<span class="st"> </span><span class="kw">lapply</span>(sets, <span class="cf">function</span>(i) h5file[i][])</a>
-<a class="sourceLine" id="cb3-27" title="27">    h5<span class="op">::</span><span class="kw">h5close</span>(h5file)</a>
-<a class="sourceLine" id="cb3-28" title="28">    result</a>
-<a class="sourceLine" id="cb3-29" title="29">}</a>
-<a class="sourceLine" id="cb3-30" title="30"></a>
-<a class="sourceLine" id="cb3-31" title="31">read.benchmark =<span class="st"> </span><span class="kw">microbenchmark</span>(</a>
-<a class="sourceLine" id="cb3-32" title="32">    <span class="st">&quot;hdf5r&quot;</span> =<span class="st"> </span><span class="kw">read_hdf5r</span>(tf, sets),</a>
-<a class="sourceLine" id="cb3-33" title="33">    <span class="st">&quot;h5&quot;</span> =<span class="st"> </span><span class="kw">read_h5</span>(tf, sets),</a>
-<a class="sourceLine" id="cb3-34" title="34">    <span class="st">&quot;hdfqlr&quot;</span> =<span class="st"> </span><span class="kw">read_hdfqlr</span>(tf, sets),</a>
-<a class="sourceLine" id="cb3-35" title="35">    <span class="dt">times =</span> 1000L,</a>
-<a class="sourceLine" id="cb3-36" title="36">    <span class="dt">unit =</span> <span class="st">&#39;ms&#39;</span></a>
-<a class="sourceLine" id="cb3-37" title="37">)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tf =<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.h5&quot;</span>)
+<span class="kw">hql_create_file</span>(tf)
+<span class="kw">hql_use_file</span>(tf)
+sets =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;vector&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>)
+<span class="cf">for</span> (i <span class="cf">in</span> sets) {
+    <span class="kw">hql_write_dataset</span>(<span class="kw">runif</span>(<span class="dv">10000</span>), i)
+}
+<span class="kw">hql_close_file</span>(tf)
+
+read_hdfqlr =<span class="st"> </span><span class="cf">function</span>(file, sets) {
+    <span class="kw">hql_use_file</span>(file)
+    result =<span class="st"> </span><span class="kw">lapply</span>(sets, hql_read_dataset)
+    <span class="kw">hql_close_file</span>(file)
+    result
+}
+
+read_hdf5r =<span class="st"> </span><span class="cf">function</span>(file, sets) {
+    h5file =<span class="st"> </span>hdf5r<span class="op">::</span>H5File<span class="op">$</span><span class="kw">new</span>(file, <span class="st">&quot;r&quot;</span>)
+    result =<span class="st"> </span><span class="kw">lapply</span>(sets, <span class="cf">function</span>(i) h5file[[i]][])
+    h5file<span class="op">$</span><span class="kw">close_all</span>()
+    result
+}
+
+read.benchmark =<span class="st"> </span><span class="kw">microbenchmark</span>(
+    <span class="st">&quot;hdf5r&quot;</span> =<span class="st"> </span><span class="kw">read_hdf5r</span>(tf, sets),
+    <span class="st">&quot;hdfqlr&quot;</span> =<span class="st"> </span><span class="kw">read_hdfqlr</span>(tf, sets),
+    <span class="dt">times =</span> 1000L,
+    <span class="dt">unit =</span> <span class="st">'ms'</span>
+)</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -457,38 +236,28 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <tbody>
 <tr class="odd">
 <td align="left">hdf5r</td>
-<td align="right">106.138066</td>
-<td align="right">109.44580</td>
-<td align="right">112.821884</td>
-<td align="right">111.200560</td>
-<td align="right">114.180845</td>
-<td align="right">197.76754</td>
+<td align="right">116.4230</td>
+<td align="right">137.74210</td>
+<td align="right">143.90668</td>
+<td align="right">143.6394</td>
+<td align="right">148.6843</td>
+<td align="right">219.4179</td>
 <td align="right">1000</td>
 </tr>
 <tr class="even">
-<td align="left">h5</td>
-<td align="right">7.334914</td>
-<td align="right">7.91498</td>
-<td align="right">8.332634</td>
-<td align="right">8.117439</td>
-<td align="right">8.350525</td>
-<td align="right">29.06353</td>
-<td align="right">1000</td>
-</tr>
-<tr class="odd">
 <td align="left">hdfqlr</td>
-<td align="right">13.928192</td>
-<td align="right">14.95506</td>
-<td align="right">15.652447</td>
-<td align="right">15.264958</td>
-<td align="right">15.749835</td>
-<td align="right">55.47240</td>
+<td align="right">12.5036</td>
+<td align="right">18.11385</td>
+<td align="right">21.01237</td>
+<td align="right">21.9278</td>
+<td align="right">23.0107</td>
+<td align="right">41.2884</td>
 <td align="right">1000</td>
 </tr>
 </tbody>
 </table>
 <div class="figure">
-<img src="data:image/png;base64,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" alt="plot of chunk read-benchmark" />
+<img src="data:image/png;base64,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" alt="plot of chunk read-benchmark" />
 <p class="caption">plot of chunk read-benchmark</p>
 </div>
 </div>
